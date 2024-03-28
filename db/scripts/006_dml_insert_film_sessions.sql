@@ -1,0 +1,40 @@
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(1, 1, 1, '2024-04-14 10:00:00', '2024-04-14 12:42:00', 250);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(2, 2, 1, '2024-04-14 14:00:00', '2024-04-14 16:22:00', 250);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(3, 3, 1, '2024-04-14 17:00:00', '2024-04-14 19:35:00', 250);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(4, 4, 2, '2024-04-14 10:00:00', '2024-04-14 11:43:00', 350);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(5, 5, 2, '2024-04-14 13:00:00', '2024-04-14 15:28:00', 350);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(6, 6, 2, '2024-04-14 16:00:00', '2024-04-14 18:49:00', 350);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(7, 7, 3, '2024-04-14 10:00:00', '2024-04-14 12:15:00', 450);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(8, 8, 3, '2024-04-14 13:00:00', '2024-04-14 15:07:00', 450);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(9, 9, 3, '2024-04-14 16:00:00', '2024-04-14 17:52:00', 450);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(10, 10, 3, '2024-04-15 19:00:00', '2024-04-15 21:32:00', 450);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(11, 11, 1, '2024-04-15 10:00:00', '2024-04-15 12:31:00', 250);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(12, 12, 1, '2024-04-15 14:00:00', '2024-04-15 16:55:00', 250);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(13, 13, 1, '2024-04-15 18:00:00', '2024-04-15 21:09:00', 250);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(14, 14, 2, '2024-04-15 10:00:00', '2024-04-15 11:40:00', 350);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(15, 15, 2, '2024-04-15 14:00:00', '2024-04-15 15:28:00', 350);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(16, 16, 2, '2024-04-15 17:00:00', '2024-04-15 19:10:00', 350);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(17, 17, 3, '2024-04-15 10:00:00', '2024-04-15 12:22:00', 450);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(18, 18, 3, '2024-04-15 13:00:00', '2024-04-15 14:58:00', 450);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(19, 19, 3, '2024-04-15 16:00:00', '2024-04-15 17:47:00', 450);
+insert into film_sessions(id, film_id, halls_id, start_time, end_time, price)
+    values(20, 20, 3, '2024-04-15 19:00:00', '2024-04-15 20:21:00', 450);
