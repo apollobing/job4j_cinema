@@ -36,27 +36,30 @@ public class SimpleFilmSessionDtoService implements FilmSessionDtoService {
 
     @Override
     public Optional<FilmSessionDto> create(int filmSessionId) {
-        FilmSessionDto filmSessionDto = new FilmSessionDto();
+        Optional<FilmSessionDto> filmSessionDto = Optional.empty();
         Optional<FilmSession> filmSession = filmSessionRepository.findById(filmSessionId);
-        Optional<Film> film = filmRepository.findById(filmSession.orElseThrow().getFilmId());
-        Optional<Genre> genre = genreRepository.findById(film.orElseThrow().getGenreId());
-        Optional<Hall> hall = hallRepository.findById(filmSession.orElseThrow().getHallId());
-        filmSessionDto.setId(filmSession.orElseThrow().getId());
-        filmSessionDto.setFilmName(film.orElseThrow().getName());
-        filmSessionDto.setFilmDescription(film.orElseThrow().getDescription());
-        filmSessionDto.setFilmYear(film.orElseThrow().getYear());
-        filmSessionDto.setFilmGenre(genre.orElseThrow().getName());
-        filmSessionDto.setFilmMinimalAge(film.orElseThrow().getMinimalAge());
-        filmSessionDto.setFilmDurationInMinutes(film.orElseThrow().getDurationInMinutes());
-        filmSessionDto.setFilmFileId(film.orElseThrow().getFileId());
-        filmSessionDto.setHallName(hall.orElseThrow().getName());
-        filmSessionDto.setHallRowCount(hall.orElseThrow().getRowCount());
-        filmSessionDto.setHallPlaceCount(hall.orElseThrow().getPlaceCount());
-        filmSessionDto.setHallDescription(hall.orElseThrow().getDescription());
-        filmSessionDto.setStartTime(filmSession.orElseThrow().getStartTime());
-        filmSessionDto.setEndTime(filmSession.orElseThrow().getEndTime());
-        filmSessionDto.setPrice(filmSession.orElseThrow().getPrice());
-        return Optional.of(filmSessionDto);
+        if (filmSession.isPresent()) {
+            filmSessionDto = Optional.of(new FilmSessionDto());
+            Optional<Film> film = filmRepository.findById(filmSession.orElseThrow().getFilmId());
+            Optional<Genre> genre = genreRepository.findById(film.orElseThrow().getGenreId());
+            Optional<Hall> hall = hallRepository.findById(filmSession.orElseThrow().getHallId());
+            filmSessionDto.get().setId(filmSession.get().getId());
+            filmSessionDto.get().setFilmName(film.get().getName());
+            filmSessionDto.get().setFilmDescription(film.get().getDescription());
+            filmSessionDto.get().setFilmYear(film.get().getYear());
+            filmSessionDto.get().setFilmGenre(genre.orElseThrow().getName());
+            filmSessionDto.get().setFilmMinimalAge(film.get().getMinimalAge());
+            filmSessionDto.get().setFilmDurationInMinutes(film.get().getDurationInMinutes());
+            filmSessionDto.get().setFilmFileId(film.get().getFileId());
+            filmSessionDto.get().setHallName(hall.orElseThrow().getName());
+            filmSessionDto.get().setHallRowCount(hall.get().getRowCount());
+            filmSessionDto.get().setHallPlaceCount(hall.get().getPlaceCount());
+            filmSessionDto.get().setHallDescription(hall.get().getDescription());
+            filmSessionDto.get().setStartTime(filmSession.get().getStartTime());
+            filmSessionDto.get().setEndTime(filmSession.get().getEndTime());
+            filmSessionDto.get().setPrice(filmSession.get().getPrice());
+        }
+        return filmSessionDto;
     }
 
     @Override
