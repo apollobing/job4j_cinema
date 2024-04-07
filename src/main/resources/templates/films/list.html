@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <!--  Зависимости Bootstrap-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/js/core_2.11.6-popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <link th:href="@{/font/bootstrap-icons_1.10.2.css}" rel="stylesheet">
+
+    <title>List of films</title>
+</head>
+<body>
+<div class="container-fluid p-0">
+    <header th:insert="~{blocks/header :: header}"></header>
+    <div class="container mt-2 mb-2">
+        <div class="row align-items-center" th:each="film : ${films}">
+            <div class="col text-center m-1">
+                <img th:src="@{/files/{fileId}(fileId=*{film.fileId})}" class="w-50" alt="Image">
+            </div>
+            <div class="col m-1">
+                <ul>
+                    <li><div th:text="'Name: ' + ${film.name}"/></li>
+                    <li><div th:text="'Year: ' + ${film.year}"/></li>
+                    <li><div th:text="'Genre: ' + ${film.genre}"/></li>
+                    <li><div th:text="'Age: ' + ${film.minimalAge}"/></li>
+                    <li><div th:text="'Duration: ' + ${film.durationInMinutes}"/></li>
+                    <li><div th:text="'Description: ' + ${film.description}"/></li>
+                </ul>
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-info w-50" th:href="@{/film-sessions}">Find a Film Session</a>
+                </div>
+            </div>
+            <hr class="col-12" />
+        </div>
+    </div>
+    <footer th:insert="~{blocks/footer :: footer}"></footer>
+</div>
+</body>
+</html>

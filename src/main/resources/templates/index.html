@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/js/code.jquery.com_jquery-3.7.0.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+    <title>Cinema</title>
+</head>
+<body>
+<div class="container-fluid p-0">
+    <header th:insert="~{blocks/header :: header}"></header>
+    <div class="container mt-2">
+        <h3>Job4jCinema project is a service where you can buy tickets to our movie theater</h3>
+
+        <div class="row mt-3 mb-3">
+            <div class="col text-center">
+                <a class="btn btn-info w-100" th:href="@{/film-sessions}">Find a Film Session</a>
+            </div>
+            <div class="col text-center">
+                <a class="btn btn-info w-100" th:href="@{/films}">Find a Film</a>
+            </div>
+        </div>
+
+        <h4>The Ultimate Cinematic Experience: Exploring the Best Movie Theater in Town</h4>
+        <p>In a world where streaming services and home theaters are becoming increasingly popular, there's still
+            something magical about the experience of watching a movie on the big screen. For movie buffs and casual
+            viewers alike, finding the perfect movie theater can elevate the entire cinematic experience. One such gem
+            is the Job4jCinema, a venue that stands out from the rest for its exceptional offerings and unforgettable
+            ambiance.
+        </p>
+
+        <h4>State-of-the-Art Facilities</h4>
+
+        <p>From the moment you step into the Job4jCinema, you're transported to a world of luxury and comfort. The
+            theater boasts state-of-the-art facilities, including cutting-edge sound systems and crystal-clear
+            projection technology. Every seat in the house offers a perfect view of the screen, ensuring that you never
+            miss a moment of the action.
+        </p>
+
+        <h4>Wide Selection of Films</h4>
+
+        <p>One of the things that sets Job4jCinema apart is its diverse selection of films. Whether you're in the mood
+            for a blockbuster hit, an indie darling, or a classic film, you're sure to find something that piques your
+            interest. The theater regularly screens both new releases and timeless favorites, catering to a wide range
+            of tastes.
+        </p>
+
+        <h4>Unique Amenities</h4>
+
+        <p>What truly sets Job4jCinema apart, however, are its unique amenities. In addition to traditional
+            concessions like popcorn and soda, the theater also offers a gourmet dining experience. Guests can enjoy a
+            delicious meal prepared by talented chefs while watching their favorite films. The theater also offers a
+            full bar, allowing guests to enjoy a cocktail or glass of wine with their movie.
+        </p>
+
+        <h4>Impeccable Service</h4>
+
+        <p>Another reason why Job4jCinema is the best movie theater in town is its impeccable service. The staff at
+            the theater are friendly, knowledgeable, and always willing to go the extra mile to ensure that guests have
+            a memorable experience. Whether you need assistance finding your seat or have a question about the film, the
+            staff are always there to help.
+        </p>
+    </div>
+</div>
+<footer th:insert="~{blocks/footer :: footer}"></footer>
+</body>
+</html>

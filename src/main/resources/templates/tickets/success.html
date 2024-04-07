@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <!--  Зависимости Bootstrap-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script th:src="@{/js/core_2.11.6-popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <link th:href="@{/font/bootstrap-icons_1.10.2.css}" rel="stylesheet">
+
+    <title>Successful buying the ticket</title>
+</head>
+<body>
+<div class="container-fluid p-0">
+    <header th:insert="~{blocks/header :: header}"></header>
+    <div class="container mt-2 mb-2">
+        <div class="row align-items-center">
+            <div class="col text-center m-1">
+                <img th:src="@{/files/{fileId}(fileId=*{filmSession.filmFileId})}" class="w-50" alt="Image">
+            </div>
+            <div class="col m-1">
+                <h4>Congratulation you successfully buy the ticket</h4>
+                <h5>Your ticket info:</h5>
+                <ul>
+                    <li><div th:text="'Film: ' + ${filmSession.filmName}"/></li>
+                    <li><div th:text="'Film starts at: ' + ${filmSession.startTime}"/></li>
+                    <li><div th:text="'Film ends at: ' + ${filmSession.endTime}"/></li>
+                    <li><div th:text="'Name of hall: ' + ${filmSession.hallName}"/></li>
+                    <li><div th:text="'Row: ' + ${ticket.rowNumber}"/></li>
+                    <li><div th:text="'Place: ' + ${ticket.placeNumber}"/></li>
+                    <li><div th:text="'Price: ' + ${filmSession.price}"/></li>
+                </ul>
+                <p>P.S. Don't forget to buy popcorn! ;-)</p>
+            </div>
+        </div>
+    </div>
+    <footer class="fixed-bottom" th:insert="~{blocks/footer :: footer}"></footer>
+</div>
+</body>
+</html>
