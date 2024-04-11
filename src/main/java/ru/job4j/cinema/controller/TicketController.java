@@ -44,20 +44,15 @@ public class TicketController {
 
     @PostMapping("/film-session/{id}/ticket/buy")
     public String create(@ModelAttribute Ticket ticket, Model model, HttpSession session) {
-        try {
-            User user = (User) session.getAttribute("user");
-            ticket.setUserId(user != null ? user.getId() : 0);
-            boolean success = ticketService.save(ticket).isPresent();
-            if (!success) {
-                model.addAttribute("message", "Ticket to the same row and place has been bought."
-                        + " Please choose another place.");
-                return "errors/404";
-            }
-            session.setAttribute("ticket", ticket);
-            return "redirect:/film-session/{id}/ticket/buy/success";
-        } catch (Exception exception) {
-            model.addAttribute("message", exception.getMessage());
+        User user = (User) session.getAttribute("user");
+        ticket.setUserId(user != null ? user.getId() : 0);
+        boolean success = ticketService.save(ticket).isPresent();
+        if (!success) {
+            model.addAttribute("message", "Ticket to the same row and place has been bought."
+                    + " Please choose another place.");
             return "errors/404";
         }
+        session.setAttribute("ticket", ticket);
+        return "redirect:/film-session/{id}/ticket/buy/success";
     }
 }
