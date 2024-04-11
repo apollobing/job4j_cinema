@@ -18,39 +18,39 @@
     <div class="container mt-2 mb-2">
         <div class="row align-items-center">
             <div class="col text-center m-1">
-                <img th:src="@{/files/{fileId}(fileId=*{filmSession.filmFileId})}" class="w-75" alt="Image">
+                <img th:src="@{/files/{fileId}(fileId=*{filmSession.filmDto.fileId})}" class="w-75" alt="Image">
             </div>
             <div class="col m-1">
                 <ul>
                     <li><div th:text="'Film starts at: ' + ${filmSession.startTime}"/></li>
                     <li><div th:text="'Film ends at: ' + ${filmSession.endTime}"/></li>
-                    <li><div th:text="'Name of hall: ' + ${filmSession.hallName}"/></li>
-                    <li><div th:text="'Number of rows: ' + ${filmSession.hallRowCount.length}"/></li>
-                    <li><div th:text="'Number of places in a row: ' + ${filmSession.hallPlaceCount.length}"/></li>
-                    <li><div th:text="'Hall description: ' + ${filmSession.hallDescription}"/></li>
+                    <li><div th:text="'Name of hall: ' + ${filmSession.hallDto.name}"/></li>
+                    <li><div th:text="'Number of rows: ' + ${filmSession.hallDto.rowCount.length}"/></li>
+                    <li><div th:text="'Number of places in a row: ' + ${filmSession.hallDto.placeCount.length}"/></li>
+                    <li><div th:text="'Hall description: ' + ${filmSession.hallDto.description}"/></li>
                     <li><div th:text="'Price: ' + ${filmSession.price}"/></li>
                 </ul>
                     <hr class="col-12" />
                 <ul>
-                    <li><div th:text="'Name: ' + ${filmSession.filmName}"/></li>
-                    <li><div th:text="'Year: ' + ${filmSession.filmYear}"/></li>
-                    <li><div th:text="'Genre: ' + ${filmSession.filmGenre}"/></li>
-                    <li><div th:text="'Age: ' + ${filmSession.filmMinimalAge}"/></li>
-                    <li><div th:text="'Duration: ' + ${filmSession.getFilmDurationInMinutes()}"/></li>
-                    <li><div th:text="'Description: ' + ${filmSession.filmDescription}"/></li>
+                    <li><div th:text="'Name: ' + ${filmSession.filmDto.name}"/></li>
+                    <li><div th:text="'Year: ' + ${filmSession.filmDto.year}"/></li>
+                    <li><div th:text="'Genre: ' + ${filmSession.filmDto.genre}"/></li>
+                    <li><div th:text="'Age: ' + ${filmSession.filmDto.minimalAge}"/></li>
+                    <li><div th:text="'Duration: ' + ${filmSession.filmDto.durationInMinutes}"/></li>
+                    <li><div th:text="'Description: ' + ${filmSession.filmDto.description}"/></li>
                 </ul>
                 <form class="mt-3" th:action="@{/film-session/{id}/ticket/buy (id = ${filmSession.id})}" method="post" th:object="${ticket}">
                     <input type="hidden" th:value="${filmSession.id}" name="sessionId">
                     <div class="mb-3">
                         <label for="row"><b>Row</b></label>
                         <select class="form-control" id="row" name="rowNumber" th:field="*{rowNumber}">
-                            <option th:each="row : ${filmSession.hallRowCount}" th:value="${row}" th:text="${row}"></option>
+                            <option th:each="row : ${filmSession.hallDto.rowCount}" th:value="${row}" th:text="${row}"></option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="place"><b>Place</b></label>
                         <select class="form-control" id="place" name="placeNumber" th:field="*{placeNumber}">
-                            <option th:each="place : ${filmSession.hallPlaceCount}" th:value="${place}" th:text="${place}"></option>
+                            <option th:each="place : ${filmSession.hallDto.placeCount}" th:value="${place}" th:text="${place}"></option>
                         </select>
                     </div>
                     <div class="row mb-2" th:if="${user.fullName != 'Guest' && user.fullName != null}">

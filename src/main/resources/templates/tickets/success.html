@@ -18,16 +18,16 @@
     <div class="container mt-2 mb-2">
         <div class="row align-items-center">
             <div class="col text-center m-1">
-                <img th:src="@{/files/{fileId}(fileId=*{filmSession.filmFileId})}" class="w-50" alt="Image">
+                <img th:src="@{/files/{fileId}(fileId=*{filmSession.filmDto.fileId})}" class="w-50" alt="Image">
             </div>
             <div class="col m-1">
                 <h4>Congratulation you successfully buy the ticket</h4>
                 <h5>Your ticket info:</h5>
                 <ul>
-                    <li><div th:text="'Film: ' + ${filmSession.filmName}"/></li>
+                    <li><div th:text="'Film: ' + ${filmSession.filmDto.name}"/></li>
                     <li><div th:text="'Film starts at: ' + ${filmSession.startTime}"/></li>
                     <li><div th:text="'Film ends at: ' + ${filmSession.endTime}"/></li>
-                    <li><div th:text="'Name of hall: ' + ${filmSession.hallName}"/></li>
+                    <li><div th:text="'Name of hall: ' + ${filmSession.hallDto.name}"/></li>
                     <li><div th:text="'Row: ' + ${ticket.rowNumber}"/></li>
                     <li><div th:text="'Place: ' + ${ticket.placeNumber}"/></li>
                     <li><div th:text="'Price: ' + ${filmSession.price}"/></li>

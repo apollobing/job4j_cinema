@@ -25,17 +25,9 @@ public class SimpleFilmDtoService implements FilmDtoService {
 
     @Override
     public Optional<FilmDto> create(int filmId) {
-        FilmDto filmDto = new FilmDto();
-        Optional<Film> film = filmRepository.findById(filmId);
-        Optional<Genre> genre = genreRepository.findById(film.orElseThrow().getGenreId());
-        filmDto.setId(film.orElseThrow().getId());
-        filmDto.setName(film.orElseThrow().getName());
-        filmDto.setDescription(film.orElseThrow().getDescription());
-        filmDto.setYear(film.orElseThrow().getYear());
-        filmDto.setGenre(genre.orElseThrow().getName());
-        filmDto.setMinimalAge(film.orElseThrow().getMinimalAge());
-        filmDto.setDurationInMinutes(film.orElseThrow().getDurationInMinutes());
-        filmDto.setFileId(film.orElseThrow().getFileId());
+        Film film = filmRepository.findById(filmId).orElseThrow();
+        Genre genre = genreRepository.findById(film.getGenreId()).orElseThrow();
+        FilmDto filmDto = new FilmDto(film, genre);
         return Optional.of(filmDto);
     }
 

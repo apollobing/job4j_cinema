@@ -1,5 +1,8 @@
 package ru.job4j.cinema.dto;
 
+import ru.job4j.cinema.model.Film;
+import ru.job4j.cinema.model.Genre;
+
 public class FilmDto {
 
     private int id;
@@ -18,68 +21,15 @@ public class FilmDto {
 
     private int fileId;
 
-    public static class Builder {
-        private int id;
-        private String name;
-        private String description;
-        private int year;
-        private String genre;
-        private int minimalAge;
-        private int durationInMinutes;
-        private int fileId;
-
-        public Builder buildId(int id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder buildName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder buildDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public Builder buildYear(int year) {
-            this.year = year;
-            return this;
-        }
-
-        public Builder buildGenre(String genre) {
-            this.genre = genre;
-            return this;
-        }
-
-        public Builder buildMinimalAge(int minimalAge) {
-            this.minimalAge = minimalAge;
-            return this;
-        }
-
-        public Builder buildDurationInMinutes(int durationInMinutes) {
-            this.durationInMinutes = durationInMinutes;
-            return this;
-        }
-
-        public Builder buildFileId(int fileId) {
-            this.fileId = fileId;
-            return this;
-        }
-
-        public FilmDto build() {
-            FilmDto filmDto = new FilmDto();
-            filmDto.id = id;
-            filmDto.name = name;
-            filmDto.description = description;
-            filmDto.year = year;
-            filmDto.genre = genre;
-            filmDto.minimalAge = minimalAge;
-            filmDto.durationInMinutes = durationInMinutes;
-            filmDto.fileId = fileId;
-            return filmDto;
-        }
+    public FilmDto(Film film, Genre genre) {
+        this.id = film.getId();
+        this.name = film.getName();
+        this.description = film.getDescription();
+        this.year = film.getYear();
+        this.genre = genre.getName();
+        this.minimalAge = film.getMinimalAge();
+        this.durationInMinutes = film.getDurationInMinutes();
+        this.fileId = film.getFileId();
     }
 
     public int getId() {

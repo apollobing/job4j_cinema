@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ConcurrentModel;
+import ru.job4j.cinema.dto.FilmDto;
 import ru.job4j.cinema.dto.FilmSessionDto;
-import ru.job4j.cinema.model.Ticket;
-import ru.job4j.cinema.model.User;
+import ru.job4j.cinema.dto.HallDto;
+import ru.job4j.cinema.model.*;
 import ru.job4j.cinema.service.FilmSessionDtoService;
 import ru.job4j.cinema.service.TicketService;
 
@@ -36,23 +37,19 @@ class TicketControllerTest {
 
     @Test
     public void whenRequestBuyTicketPageThenGetPageWithFilmSessionDto() {
-        var filmSession = new FilmSessionDto.Builder()
-                .buildId(1)
-                .buildFilmName("FilmName1")
-                .buildFilmDescription("FilmDescription1")
-                .buildFilmYear(1999)
-                .buildFilmGenre("FilmGenre1")
-                .buildFilmMinimalAge(7)
-                .buildFilmDurationInMinutes(90)
-                .buildFilmFileId(1)
-                .buildHallName("HallName1")
-                .buildHallRowCount(5)
-                .buildHallPlaceCount(10)
-                .buildHallDescription("HallDescription1")
-                .buildStartTime(LocalDateTime.now())
-                .buildEndTime(LocalDateTime.now())
-                .buildPrice(300)
+        var film = new Film.Builder()
+                .buildName("FilmName1")
+                .buildDescription("FilmDescription1")
+                .buildYear(1999)
+                .buildGenreId(1)
+                .buildMinimalAge(7)
+                .buildDurationInMinutes(90)
+                .buildFileId(1)
                 .build();
+        var genre = new Genre(1, "FilmGenre1");
+        var hall = new Hall(1, "HallName1", 5, 10, "HallDescription1");
+        var filmSession = new FilmSessionDto(1, new FilmDto(film, genre), new HallDto(hall),
+                LocalDateTime.now(), LocalDateTime.now(), 300);
         when(filmSessionDtoService.create(filmSession.getId())).thenReturn(Optional.of(filmSession));
 
         var model = new ConcurrentModel();
@@ -67,23 +64,19 @@ class TicketControllerTest {
 
     @Test
     public void whenRequestBuyPageAfterCreateTicketThenGetSuccessPageWithFilmSessionDtoAndTicketData() {
-        var filmSession = new FilmSessionDto.Builder()
-                .buildId(1)
-                .buildFilmName("FilmName1")
-                .buildFilmDescription("FilmDescription1")
-                .buildFilmYear(1999)
-                .buildFilmGenre("FilmGenre1")
-                .buildFilmMinimalAge(7)
-                .buildFilmDurationInMinutes(90)
-                .buildFilmFileId(1)
-                .buildHallName("HallName1")
-                .buildHallRowCount(5)
-                .buildHallPlaceCount(10)
-                .buildHallDescription("HallDescription1")
-                .buildStartTime(LocalDateTime.now())
-                .buildEndTime(LocalDateTime.now())
-                .buildPrice(300)
+        var film = new Film.Builder()
+                .buildName("FilmName1")
+                .buildDescription("FilmDescription1")
+                .buildYear(1999)
+                .buildGenreId(1)
+                .buildMinimalAge(7)
+                .buildDurationInMinutes(90)
+                .buildFileId(1)
                 .build();
+        var genre = new Genre(1, "FilmGenre1");
+        var hall = new Hall(1, "HallName1", 5, 10, "HallDescription1");
+        var filmSession = new FilmSessionDto(1, new FilmDto(film, genre), new HallDto(hall),
+                LocalDateTime.now(), LocalDateTime.now(), 300);
         var ticket = new Ticket(1, 3, 5, 7, 9);
         var user = new User(1, "Name", "email@email.com", "pass");
         when(filmSessionDtoService.create(filmSession.getId())).thenReturn(Optional.of(filmSession));

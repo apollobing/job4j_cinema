@@ -3,7 +3,12 @@ package ru.job4j.cinema.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ConcurrentModel;
+import ru.job4j.cinema.dto.FilmDto;
 import ru.job4j.cinema.dto.FilmSessionDto;
+import ru.job4j.cinema.dto.HallDto;
+import ru.job4j.cinema.model.Film;
+import ru.job4j.cinema.model.Genre;
+import ru.job4j.cinema.model.Hall;
 import ru.job4j.cinema.service.FilmSessionDtoService;
 
 import java.time.LocalDateTime;
@@ -27,40 +32,34 @@ class FilmSessionControllerTest {
 
     @Test
     public void whenRequestFilmSessionsListPageThenGetPageWithFilmSessions() {
-        var filmSession1 = new FilmSessionDto.Builder()
-                .buildId(1)
-                .buildFilmName("FilmName1")
-                .buildFilmDescription("FilmDescription1")
-                .buildFilmYear(1999)
-                .buildFilmGenre("FilmGenre1")
-                .buildFilmMinimalAge(7)
-                .buildFilmDurationInMinutes(90)
-                .buildFilmFileId(1)
-                .buildHallName("HallName1")
-                .buildHallRowCount(5)
-                .buildHallPlaceCount(10)
-                .buildHallDescription("HallDescription1")
-                .buildStartTime(LocalDateTime.now())
-                .buildEndTime(LocalDateTime.now())
-                .buildPrice(300)
+        var film1 = new Film.Builder()
+                .buildName("FilmName1")
+                .buildDescription("FilmDescription1")
+                .buildYear(1999)
+                .buildGenreId(1)
+                .buildMinimalAge(7)
+                .buildDurationInMinutes(90)
+                .buildFileId(1)
                 .build();
-        var filmSession2 = new FilmSessionDto.Builder()
-                .buildId(2)
-                .buildFilmName("FilmName2")
-                .buildFilmDescription("FilmDescription2")
-                .buildFilmYear(2000)
-                .buildFilmGenre("FilmGenre2")
-                .buildFilmMinimalAge(17)
-                .buildFilmDurationInMinutes(95)
-                .buildFilmFileId(2)
-                .buildHallName("HallName2")
-                .buildHallRowCount(10)
-                .buildHallPlaceCount(15)
-                .buildHallDescription("HallDescription2")
-                .buildStartTime(LocalDateTime.now())
-                .buildEndTime(LocalDateTime.now())
-                .buildPrice(400)
+        var genre1 = new Genre(1, "FilmGenre1");
+        var hall1 = new Hall(1, "HallName1", 5, 10, "HallDescription1");
+        var filmSession1 = new FilmSessionDto(1, new FilmDto(film1, genre1), new HallDto(hall1),
+                LocalDateTime.now(), LocalDateTime.now(), 300);
+
+        var film2 = new Film.Builder()
+                .buildName("FilmName2")
+                .buildDescription("FilmDescription2")
+                .buildYear(2000)
+                .buildGenreId(2)
+                .buildMinimalAge(17)
+                .buildDurationInMinutes(95)
+                .buildFileId(2)
                 .build();
+        var genre2 = new Genre(2, "FilmGenre2");
+        var hall2 = new Hall(2, "HallName2", 10, 15, "HallDescription2");
+        var filmSession2 = new FilmSessionDto(1, new FilmDto(film2, genre2), new HallDto(hall2),
+                LocalDateTime.now(), LocalDateTime.now(), 400);
+
         var expectedFilmSessions = List.of(filmSession1, filmSession2);
         when(filmSessionDtoService.findAll()).thenReturn(expectedFilmSessions);
 
