@@ -3,7 +3,9 @@ package ru.job4j.cinema.controller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ConcurrentModel;
 import ru.job4j.cinema.model.User;
@@ -39,27 +41,30 @@ class UserControllerTest {
     }
 
     @Test
-    public void whenRegisterUserThenGetSameDataAndRedirectToIndexPage() {
+    public void whenRegisterUserThenGetSameDataAndRedirectToLoginPage() {
         var userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         when(userService.save(userArgumentCaptor.capture())).thenReturn(Optional.of(user));
 
         var model = new ConcurrentModel();
-        var view = userController.register(model, user);
+        var response = new MockHttpServletResponse();
+        var view = userController.register(model, user, response);
         var actualUser = userArgumentCaptor.getValue();
 
-        assertThat(view).isEqualTo("redirect:/users/login");
+        assertThat(view).isEqualTo("redirect:/users/register");
         assertThat(actualUser).isEqualTo(user);
     }
 
     @Test
-    public void whenRegisterUserThatDBHasThenCanNotGetIndexPageAndGet404PageWithErrorMessage() {
+    public void whenRegisterUserThatDBHasThenGetPageWithErrorMessageAnd409Status() {
         when(userService.save(user)).thenReturn(Optional.empty());
 
         var model = new ConcurrentModel();
-        var view = userController.register(model, user);
+        var response = new MockHttpServletResponse();
+        var view = userController.register(model, user, response);
         var actualErrorMessage = model.getAttribute("message");
 
-        assertThat(view).isEqualTo("errors/404");
+        assertThat(view).isEqualTo("errors/error");
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
         assertThat(actualErrorMessage).isEqualTo("User with the same email already exists");
     }
 

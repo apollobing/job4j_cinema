@@ -2,7 +2,9 @@ package ru.job4j.cinema.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.ConcurrentModel;
 import ru.job4j.cinema.dto.FilmDto;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -54,8 +57,9 @@ class TicketControllerTest {
 
         var model = new ConcurrentModel();
         var request = new MockHttpServletRequest();
+        var response = new MockHttpServletResponse();
         var session = new MockHttpSession();
-        var view = ticketController.buy(model, filmSession.getId(), request, session);
+        var view = ticketController.buy(model, filmSession.getId(), request, session, response);
         var actualFilmSession = model.getAttribute("filmSession");
 
         assertThat(view).isEqualTo("tickets/buy");
@@ -84,10 +88,11 @@ class TicketControllerTest {
         var model = new ConcurrentModel();
         var request = new MockHttpServletRequest();
         request.setRequestURI("/film-session/" + filmSession.getId() + "/ticket/buy/success");
+        var response = new MockHttpServletResponse();
         var session = new MockHttpSession();
         session.setAttribute("user", user);
         session.setAttribute("ticket", ticket);
-        var view = ticketController.buy(model, filmSession.getId(), request, session);
+        var view = ticketController.buy(model, filmSession.getId(), request, session, response);
         var actualFilmSession = model.getAttribute("filmSession");
         var actualTicket = model.getAttribute("ticket");
 
@@ -97,14 +102,16 @@ class TicketControllerTest {
     }
 
     @Test
-    public void whenRequestBuyTicketPageWithWrongFilmSessionIdThenGet404Page() {
+    public void whenRequestBuyTicketPageWithWrongFilmSessionIdThenGetPageWith404Status() {
         var model = new ConcurrentModel();
         var request = new MockHttpServletRequest();
+        var response = new MockHttpServletResponse();
         var session = new MockHttpSession();
-        var view = ticketController.buy(model, 5, request, session);
+        var view = ticketController.buy(model, 5, request, session, response);
         var message = model.getAttribute("message");
 
-        assertThat(view).isEqualTo("errors/404");
+        assertThat(view).isEqualTo("errors/error");
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
         assertThat(message).isEqualTo("Film session with this id not found");
     }
 
@@ -115,9 +122,10 @@ class TicketControllerTest {
         when(ticketService.save(ticket)).thenReturn(Optional.of(ticket));
 
         var model = new ConcurrentModel();
+        var response = new MockHttpServletResponse();
         var session = new MockHttpSession();
         session.setAttribute("user", user);
-        var view = ticketController.create(ticket, model, session);
+        var view = ticketController.create(ticket, model, session, response);
         var actualTicket = session.getAttribute("ticket");
 
         assertThat(view).isEqualTo("redirect:/film-session/{id}/ticket/buy/success");
@@ -125,38 +133,39 @@ class TicketControllerTest {
     }
 
     @Test
-    public void whenBuySameTicketThenGet404Page() {
+    public void whenBuySameTicketThenGetPageWith409Status() {
         var ticket = new Ticket(1, 3, 5, 7, 9);
         var user = new User(1, "Name", "email@email.com", "pass");
         when(ticketService.save(ticket)).thenReturn(Optional.empty());
 
         var model = new ConcurrentModel();
+        var response = new MockHttpServletResponse();
         var session = new MockHttpSession();
         session.setAttribute("user", user);
-        var view = ticketController.create(ticket, model, session);
+        var view = ticketController.create(ticket, model, session, response);
         var actualTicket = session.getAttribute("ticket");
         var message = model.getAttribute("message");
 
-        assertThat(view).isEqualTo("errors/404");
+        assertThat(view).isEqualTo("errors/error");
         assertThat(actualTicket).isEqualTo(null);
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.CONFLICT.value());
         assertThat(message).isEqualTo("Ticket to the same row and place has been bought."
                 + " Please choose another place.");
     }
 
     @Test
-    public void whenSomeExceptionThrownThenGetErrorPageWithMessage() {
+    public void whenSomeExceptionThrownThenGetTheSameExceptionClassAndMessage() {
         var ticket = new Ticket(1, 3, 5, 7, 9);
         var user = new User(1, "Name", "email@email.com", "pass");
         var expectedException = new RuntimeException("Some exception");
         when(ticketService.save(any())).thenThrow(expectedException);
 
         var model = new ConcurrentModel();
+        var response = new MockHttpServletResponse();
         var session = new MockHttpSession();
         session.setAttribute("user", user);
-        var view = ticketController.create(ticket, model, session);
-        var actualExceptionMessage = model.getAttribute("message");
-
-        assertThat(view).isEqualTo("errors/404");
-        assertThat(actualExceptionMessage).isEqualTo(expectedException.getMessage());
+        assertThatThrownBy(() -> ticketController.create(ticket, model, session, response))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining(expectedException.getMessage());
     }
 }

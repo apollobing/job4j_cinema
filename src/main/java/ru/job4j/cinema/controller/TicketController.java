@@ -1,6 +1,7 @@
 package ru.job4j.cinema.controller;
 
 import net.jcip.annotations.ThreadSafe;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import ru.job4j.cinema.service.FilmSessionDtoService;
 import ru.job4j.cinema.service.TicketService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @ThreadSafe
@@ -29,11 +31,13 @@ public class TicketController {
     }
 
     @GetMapping({"/film-session/{id}/ticket/buy", "/film-session/{id}/ticket/buy/success"})
-    public String buy(Model model, @PathVariable int id, HttpServletRequest request, HttpSession session) {
+    public String buy(Model model, @PathVariable int id, HttpServletRequest request,
+                      HttpSession session, HttpServletResponse response) {
         var filmSessionDtoOptional = filmSessionDtoService.create(id);
         if (filmSessionDtoOptional.isEmpty()) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             model.addAttribute("message", "Film session with this id not found");
-            return "errors/404";
+            return "errors/error";
         }
         model.addAttribute("filmSession", filmSessionDtoOptional.get());
         Ticket ticket = (Ticket) session.getAttribute("ticket");
@@ -43,14 +47,16 @@ public class TicketController {
     }
 
     @PostMapping("/film-session/{id}/ticket/buy")
-    public String create(@ModelAttribute Ticket ticket, Model model, HttpSession session) {
+    public String create(@ModelAttribute Ticket ticket, Model model, HttpSession session,
+                         HttpServletResponse response) {
         User user = (User) session.getAttribute("user");
         ticket.setUserId(user != null ? user.getId() : 0);
         boolean success = ticketService.save(ticket).isPresent();
         if (!success) {
+            response.setStatus(HttpStatus.CONFLICT.value());
             model.addAttribute("message", "Ticket to the same row and place has been bought."
                     + " Please choose another place.");
-            return "errors/404";
+            return "errors/error";
         }
         session.setAttribute("ticket", ticket);
         return "redirect:/film-session/{id}/ticket/buy/success";

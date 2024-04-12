@@ -1,5 +1,6 @@
 package ru.job4j.cinema.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import ru.job4j.cinema.model.User;
 import ru.job4j.cinema.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -28,14 +30,15 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @ModelAttribute User user) {
+    public String register(Model model, @ModelAttribute User user, HttpServletResponse response) {
         var savedUser = userService.save(user);
         if (savedUser.isEmpty()) {
+            response.setStatus(HttpStatus.CONFLICT.value());
             model.addAttribute("user", new User());
             model.addAttribute("message", "User with the same email already exists");
-            return "errors/404";
+            return "errors/error";
         }
-        return "redirect:/users/login";
+        return "redirect:/users/register";
     }
 
     @GetMapping("/login")
