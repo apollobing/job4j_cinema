@@ -50,7 +50,7 @@ public class TicketController {
     public String create(@ModelAttribute Ticket ticket, Model model, HttpSession session,
                          HttpServletResponse response) {
         User user = (User) session.getAttribute("user");
-        ticket.setUserId(user != null ? user.getId() : 0);
+        ticket.setUserId(user.getId());
         boolean success = ticketService.save(ticket).isPresent();
         if (!success) {
             response.setStatus(HttpStatus.CONFLICT.value());
